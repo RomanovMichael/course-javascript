@@ -25,8 +25,8 @@ function isAllTrue(array, fn) {
     throw new Error('empty array');
   }
 
-  for (const el of array) {
-    if (!fn(el)) {
+  for (let i = 0; i < array.length; i++) {
+    if (!fn(array[i])) {
       return false;
     }
   }
@@ -58,12 +58,11 @@ function isSomeTrue(array, fn) {
     throw new Error('empty array');
   }
 
-  for (const el of array) {
-    if (fn(el)) {
+  for (let i = 0; i < array.length; i++) {
+    if (fn(array[i])) {
       return true;
     }
   }
-
   return false;
 }
 
