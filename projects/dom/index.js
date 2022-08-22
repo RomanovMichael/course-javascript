@@ -1,5 +1,4 @@
 /* ДЗ 4 - работа с DOM */
-
 /*
  Задание 1:
 
@@ -12,7 +11,6 @@
  */
 function createDivWithText(text) {
   const div = document.createElement('div');
-  document.body.appendChild(div);
   div.textContent = text;
   return div;
 }
@@ -124,7 +122,7 @@ function deleteTextNodesRecursive(where) {
     const child = where.childNodes[i];
     if (child.nodeType === 3) {
       where.removeChild(child);
-      i = i - 1;
+      i--;
     } else if (child.nodeType === 1) {
       deleteTextNodesRecursive(child);
     }
@@ -151,7 +149,40 @@ function deleteTextNodesRecursive(where) {
      texts: 3
    }
  */
-function collectDOMStat(root) {}
+function collectDOMStat(root) {
+  const stat = {
+    tags: {},
+    classes: {},
+    texts: 0,
+  };
+
+  function scan(root) {
+    for (const child of root.childNodes) {
+      if (child.nodeType === Node.TEXT_NODE) {
+        stat.texts++;
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        if (child.tagName in stat.tags) {
+          stat.tags[child.tagName]++;
+        } else {
+          stat.tags[child.tagName] = 1;
+        }
+
+        for (const className of child.classList) {
+          if (className in stat.classes) {
+            stat.classes[className]++;
+          } else {
+            stat.classes[className] = 1;
+          }
+        }
+        scan(child);
+      }
+    }
+  }
+
+  scan(root);
+
+  return stat;
+}
 
 /*
  Задание 8 *:
@@ -185,7 +216,21 @@ function collectDOMStat(root) {}
      nodes: [div]
    }
  */
-function observeChildNodes(where, fn) {}
+function observeChildNodes(where, fn) {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        fn({
+          type: mutation.addedNodes.length ? 'insert' : 'remove',
+          nodes: [
+            ...(mutation.addedNodes.length ? mutation.addedNodes : mutation.removedNodes),
+          ],
+        });
+      }
+    });
+  });
+  observer.observe(where, { childList: true, subtree: true });
+}
 
 export {
   createDivWithText,
