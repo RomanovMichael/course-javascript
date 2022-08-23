@@ -41,7 +41,7 @@ const homeworkContainer = document.querySelector('#app');
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
 function loadTowns() {
-  loadAndSortTowns();
+  return loadAndSortTowns();
 }
 
 /*
