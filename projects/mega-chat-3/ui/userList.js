@@ -15,7 +15,6 @@ export default class UserList {
       element.classList.add('user-list-item');
       element.textContent = name;
       fragment.append(element);
-      console.log(this.items.size);
       header.textContent = `участники ` + `(${this.items.size})`;
     }
 

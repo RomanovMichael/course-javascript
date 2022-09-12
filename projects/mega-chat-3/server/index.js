@@ -1,10 +1,7 @@
-// не забудьте сделать npm install ;)
-
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const { Server } = require('ws');
-const userConnect = [];
 
 function readBody(req) {
   return new Promise((resolve, reject) => {
@@ -54,8 +51,6 @@ const connections = new Map();
 
 wss.on('connection', (socket) => {
   connections.set(socket, {});
-  userConnect.push(socket);
-  console.log(userConnect.length);
 
   socket.on('message', (messageData) => {
     const message = JSON.parse(messageData);
